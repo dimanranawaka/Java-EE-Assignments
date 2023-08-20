@@ -39,6 +39,10 @@ public class CustomerServlet extends HttpServlet {
 
                 String address = resultSet.getString(3);
 
+                customerObject.add("id",id);
+                customerObject.add("name",name);
+                customerObject.add("address",address);
+
                 allCustomer.add(customerObject.build());
 
             }
