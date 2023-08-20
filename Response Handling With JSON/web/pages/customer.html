@@ -52,17 +52,13 @@
                     <input name="cusAddress" class="form-control" id="txtCustomerAddress" type="text">
                     <span class="control-error" id="lblcusaddress"></span>
                 </div>
-                <div class="form-group">
-                    <label for="txtCustomerSalary">Customer Salary</label>
-                    <input name="cusSalary" class="form-control" id="txtCustomerSalary" type="text">
-                    <span class="control-error" id="lblcussalary"></span>
-                </div>
+
                 <div class="btn-group">
-                    <button formaction="customer?option=add" formmethod="post" class="btn btn-primary" id="btnCustomer" form="customerForm">Save Customer</button>
-                    <button formaction="customer?option=delete" formmethod="post" class="btn btn-danger" id="btnCusDelete" form="customerForm">Remove</button>
-                    <button formaction="customer?option=update" formmethod="post" class="btn btn-warning" id="btnUpdate" form="customerForm">Update</button>
-                    <button formaction="customer" class="btn btn-success" id="btnGetAll">Get All</button>
-                    <button formaction="/pos_one" class="btn btn-danger" id="btn-clear1">Clear All</button>
+                    <button type="button" class="btn btn-primary" id="btnCustomer" form="customerForm">Save Customer</button>
+                    <button type="button" class="btn btn-danger" id="btnCusDelete" form="customerForm">Remove</button>
+                    <button type="button" class="btn btn-warning" id="btnUpdate" form="customerForm">Update</button>
+                    <button type="button" id="btnGetAll">Get All</button>
+                    <button type="button" class="btn btn-danger" id="btn-clear1">Clear All</button>
                 </div>
             </form>
         </div>
@@ -88,56 +84,68 @@
 <script src="../assets/js/jquery-3.6.1.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 
-<!--<script>-->
-<!--    //select the button and add an event to it-->
-<!--    document.getElementById("btnCustomer").addEventListener("click", function () {-->
+<script>
 
-<!--        //get typed values of input fields-->
-<!--        let id = document.getElementById("txtCustomerID").value;-->
-<!--        let name = document.getElementById("txtCustomerName").value;-->
-<!--        let address = document.getElementById("txtCustomerAddress").value;-->
-<!--        let salary = document.getElementById("txtCustomerSalary").value;-->
+    function bindRowClickOnAction() {
 
-<!--        //let's print it-->
-<!--        console.log(id,name,address,salary);-->
+        $("#tblCustomer>tr").click(function () {
+            let id = $(this).children(":eq(0)").text();
+            let name = $(this).children(":eq(1)").text();
+            let address = $(this).children(":eq(2)").text();
 
-<!--        //catch the table body-->
-<!--        let tBody=document.getElementById("tblCustomer");-->
+            $("#txtCustomerID").val(id);
+            $("#txtCustomerName").val(name);
+            $("#txtCustomerAddress").val(address);
+        });
+    }
+        function getAll(){
 
-<!--        // let's see how we should insert a table row using html format-->
-<!--        //<tr>-->
-<!--        // <td>id</td>-->
-<!--        // <td>name</td>-->
-<!--        // <td>address</td>-->
-<!--        // <td>salary</td>-->
-<!--        // </tr>-->
+            $("#tblCustomer").empty();
 
-<!--        //ok then, let's create the above row-->
-<!--       let tr= document.createElement("tr");-->
+            $.ajax({
 
-<!--       //let's create another four columns-->
-<!--       let col1= document.createElement("td");-->
-<!--       let col2= document.createElement("td");-->
-<!--       let col3= document.createElement("td");-->
-<!--       let col4= document.createElement("td");-->
+                url : "customer",
 
-<!--       //set input fields values to the above created columns-->
-<!--        col1.textContent=id;-->
-<!--        col2.textContent=name;-->
-<!--        col3.textContent=address;-->
-<!--        col4.textContent=salary;-->
+                success : function (customer) {
 
-<!--        //set 4 columns to the previously created row-->
-<!--        tr.appendChild(col1);-->
-<!--        tr.appendChild(col2);-->
-<!--        tr.appendChild(col3);-->
-<!--        tr.appendChild(col4);-->
+                    for (let i in customer){
 
-<!--        //set the row to the table body-->
-<!--        tBody.appendChild(tr);-->
+                        let cus = customer[i];
+                        let id = cus.id;
+                        let name = cus.name;
+                        let address = cus.address;
 
-<!--        //Work done;-->
-<!--    });-->
-<!--</script>-->
+
+                        console.log(id,name,address);
+
+                        let row = `<tr><td>${id}</td><td>${name}</td><td>${address}</td>`;
+
+                        $("#tblCustomer").append(row);
+                    }
+
+                    bindRowClickOnAction();
+
+                },
+
+                error : function (error){
+
+                    console.log(error)
+
+                }
+
+            });
+
+    }
+
+    $("#btnGetAll").click(function () {
+
+        getAll();
+
+    });
+
+
+
+
+</script>
 </body>
 </html>
