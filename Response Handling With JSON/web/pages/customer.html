@@ -99,6 +99,15 @@
             $("#txtCustomerAddress").val(address);
         });
     }
+    /* // clear function*/
+    function clearRow(id,name,address){
+
+        $("#txtCustomerID").val(id);
+        $("#txtCustomerName").val(name);
+        $("#txtCustomerAddress").val(address);
+
+    }
+    /* // getAll function*/
         function getAll(){
 
             $("#tblCustomer").empty();
@@ -125,7 +134,7 @@
                     }
 
                     bindRowClickOnAction();
-
+                    clearRow("","","");
                 },
 
                 error : function (error){
@@ -144,14 +153,7 @@
 
     });
 
-   /* // clear function*/
-    function clearRow(id,name,address){
-
-        $("#txtCustomerID").val(id);
-        $("#txtCustomerName").val(name);
-        $("#txtCustomerAddress").val(address);
-
-    }
+    /* // save function*/
 
     $("#btnCustomer").click(function () {
 
@@ -162,7 +164,6 @@
             url:"customer",
             method:"post",
             data:formData,
-
             success:function (res) {
                 getAll();
                 alert(
@@ -172,6 +173,8 @@
         });
 
     });
+
+    /* // update function*/
 
     $("#btnUpdate").click(function () {
 
@@ -191,7 +194,6 @@
             method:"put",
             data:JSON.stringify(customerDB),
             contentType:"application/json",
-
             success:function (){
                 getAll();
             }
@@ -200,6 +202,8 @@
 
     });
 
+    /* // delete function*/
+
     $("#btnCusDelete").click(function () {
 
         let id = $("#txtCustomerID").val();
@@ -207,7 +211,6 @@
         $.ajax({
             url:"customer?id="+id,
             method:'delete',
-
             success:function (res) {
                 getAll();
                 alert(
